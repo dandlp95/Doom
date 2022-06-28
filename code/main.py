@@ -69,6 +69,15 @@ clock1 = pygame.time.Clock()
 
 frame = 0
 
+def is_collision(enemy_x, enemy_y, projectile_x, projectile_y):
+    distance = math.sqrt(math.pow(enemy_x - projectile_x, 2) +
+                         math.pow(enemy_y - projectile_y, 2))
+    #print(enemy_x, enemy_y, projectile_x, projectile_y)
+    if distance < 50:
+        return True
+    else:
+        return False
+
 def shoot(x, y):
     bullet.set_state("fire")
     screen.blit(pygame.image.load(bullet.get_image()), (x, y))
@@ -251,7 +260,6 @@ while running:
             character.set_jump_count(8)
     
     if  700 <= time_elapsed <= 1500:
-        print(time_elapsed)
         enemy.set_attack(True)
         enemy.set_is_shooting(True)
         
@@ -263,10 +271,9 @@ while running:
         if 1450 <= time_elapsed <= 1500:
             enemy.set_attack(False)
             time_elapsed = 0
+    
+    collision = is_collision(enemy.get_x(), enemy.get_y(), bullet.get_x(), bullet.get_y())
+    if collision:
+        print("You hit the enemy")
         
     redraw_screen()
-
-# fire_ball = Bullet()
-# fire_ball.set_state("ready")
-# fire_ball.set_velocity(15)
-# fire_ball.set_image("../media/enemy/l-fire-ball.png")
