@@ -8,9 +8,12 @@ class Player(Actor):
         #self._image = '../media/player/standing.png'
         self._image_r = "../media/player/doom-guy-r.png"
         self._image_l = "../media/player/doom-guy-l.png"
+        self._shoot_r_img = "../media/player/shoot-r.png"
+        self._shoot_l_img = "../media/player/shoot-l.png"
         self._walk_right = ['../media/player/R1.png', '../media/player/R2.png', '../media/player/R3.png', '../media/player/R4.png', '../media/player/R5.png', '../media/player/R6.png', '../media/player/R7.png', '../media/player/R8.png', '../media/player/R9.png']
         self._walk_left = ['../media/player/L1.png', '../media/player/L2.png', '../media/player/L3.png', '../media/player/L4.png', '../media/player/L5.png', '../media/player/L6.png', '../media/player/L7.png', '../media/player/L8.png', '../media/player/L9.png']
         self._last_direction = ""
+        
 
     def set_lives(self, lives):
         self._lives = lives
@@ -38,3 +41,9 @@ class Player(Actor):
     
     def get_last_direction(self):
         return self._last_direction
+    
+    def get_img_shooting_r(self):
+        return self._shoot_r_img
+    
+    def get_img_shooting_l(self):
+        return self._shoot_l_img

@@ -12,12 +12,37 @@ class Actor:
         self._velocity = 0
         
         # Actions
+        self._standing = False
         self._left = False
         self._right = False
         self._shooting = False
         self._hurting = False
         self._dying = False
+    
+    def set_is_standing(self, is_standing):
+        self._standing = is_standing
+    
+    def get_is_standing(self):
+        return self._standing
         
+    def set_is_shooting(self, is_shooting):
+        self._is_shooting = is_shooting
+        
+    def set_is_hurting(self, is_hurting):
+        self._is_hurting = is_hurting
+        
+    def set_is_dying(self, is_dying):
+        self._is_dying = is_dying
+        
+    def get_is_shooting(self):
+        return self._is_shooting
+    
+    def get_is_hurting(self):
+        return  self._is_hurting
+    
+    def get_is_dying(self):
+        return self._dying
+            
     def set_left(self, is_moving):
         self._left = is_moving
     

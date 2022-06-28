@@ -40,6 +40,7 @@ character.set_velocity(5)
 character.set_height(64)
 character.set_width(64)
 character.set_last_direction("left")
+character.set_is_standing(True)
 
 # Setting up bullet
 bullet = Bullet()
@@ -84,7 +85,7 @@ def redraw_screen():
         
         screen.blit(pygame.image.load(faces[1]), (20, 20))
         
-    else:
+    elif character.get_is_standing():
         if character.get_last_direction() == "left":
             doom_guy_img = character.get_image_l()
         elif  character.get_last_direction() == "right":
@@ -92,11 +93,31 @@ def redraw_screen():
             
         screen.blit(pygame.image.load(doom_guy_img), (x,y))
         
-        screen.blit(pygame.image.load(faces[0]), (20, 20))        
+        screen.blit(pygame.image.load(faces[0]), (20, 20))     
+    
+    elif not character.get_is_standing():
+        
+        if character.get_is_shooting():
+        
+            if character.get_last_direction() == "left":
+                doom_guy_img = character.get_img_shooting_l()
+                face_img = faces[3]
+            elif  character.get_last_direction() == "right":
+                doom_guy_img = character.get_img_shooting_r()
+                face_img = faces[1]
+                
+            screen.blit(pygame.image.load(doom_guy_img), (x,y))
+            screen.blit(pygame.image.load(face_img), (20, 20))
+           
     
     if bullet.get_x() <= 0 or bullet.get_x() >= 682:
         bullet.set_x(character.get_x())
         bullet.set_state("ready")
+    
+    bullet_character_distance = abs(bullet.get_x() - character.get_x())
+    if bullet_character_distance > 70:
+        character.set_is_standing(True)
+        character.set_is_shooting(False)
     
     if bullet.get_state() == "fire":
         shoot(bullet.get_x(), bullet.get_y())
@@ -146,13 +167,17 @@ while running:
     else:
         character.set_left(False)
         character.set_right(False)
+
         player_walk_count = 0
     
     if keys[pygame.K_SPACE]:
         if bullet.get_state() == "ready":
             direction = character.get_last_direction()
             bullet.set_x(character.get_x())
-            bullet.set_y(character.get_y() + 10)
+            bullet.set_y(character.get_y() + 20)
+            
+            character.set_is_shooting(True)
+            character.set_is_standing(False)
             
             shoot(bullet.get_x(), bullet.get_y())
         
