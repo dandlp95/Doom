@@ -11,9 +11,12 @@ class Actor:
         # This is velocity
         self._velocity = 0
         
-        # Movements
+        # Actions
         self._left = False
         self._right = False
+        self._shooting = False
+        self._hurting = False
+        self._dying = False
         
     def set_left(self, is_moving):
         self._left = is_moving
