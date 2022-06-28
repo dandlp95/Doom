@@ -7,7 +7,7 @@ class Enemy(Actor):
         self._lives = 0
         # Left 
         self._image_l = "../media/enemy/L2.png"
-        self._attack_l_img = "../media/enemy/attack.png"
+        self._attack_l_img = "../media/enemy/l-attack.png"
         self._walk_left = ["../media/enemy/L1.png", "../media/enemy/L2.png", "../media/enemy/L3.png", "../media/enemy/L4.png", "../media/enemy/L1.png", "../media/enemy/L2.png", "../media/enemy/L3.png", "../media/enemy/L4.png", "../media/enemy/L1.png"]
         # Right
         self._image_r = "../media/enemy/R2.png"
@@ -15,15 +15,22 @@ class Enemy(Actor):
         self._walk_right = ["../media/enemy/R1.png", "../media/enemy/R2.png", "../media/enemy/R3.png", "../media/enemy/R4.png"]
         self._last_direction = ""
         
+        self._attack = False
         
+    def set_attack(self, attack):
+        self._attack = attack
+    
+    def get_is_attacking(self):
+        return self._attack
+    
     def set_lives(self, lives):
         self._lives = lives
 
     def get_lives(self):
         return self._lives
     
-    def is_shooting(self, is_shooting):
-        return is_shooting
+    # def is_shooting(self, is_shooting):
+    #     return is_shooting
     
     def set_last_direction(self, last_direction):
         self._last_direction = last_direction

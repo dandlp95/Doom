@@ -26,7 +26,7 @@ class Actor:
         return self._standing
         
     def set_is_shooting(self, is_shooting):
-        self._is_shooting = is_shooting
+        self._shooting = is_shooting
         
     def set_is_hurting(self, is_hurting):
         self._is_hurting = is_hurting
@@ -35,7 +35,7 @@ class Actor:
         self._is_dying = is_dying
         
     def get_is_shooting(self):
-        return self._is_shooting
+        return self._shooting
     
     def get_is_hurting(self):
         return  self._is_hurting

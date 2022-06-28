@@ -49,25 +49,30 @@ enemy.set_x(690)
 enemy.set_y(275)
 enemy.set_velocity(5)
 
-
-# Setting up bullet
+# Setting up projectiles
 bullet = Bullet()
 
 bullet.set_state("ready")
 bullet.set_velocity(15)
 
+fire_ball = Bullet()
+fire_ball.set_state("ready")
+fire_ball.set_velocity(15)
+fire_ball.set_image("../media/enemy/fire-ball.png")
+
 # Character moving
 x = character.get_x()
 y = character.get_y()
 
-frame = 0
+time_elapsed = 0
+clock1 = pygame.time.Clock()
 
+frame = 0
 
 def shoot(x, y):
     bullet.set_state("fire")
     screen.blit(pygame.image.load(bullet.get_image()), (x, y))
-
-
+    
 def redraw_screen():
 
     # background.
@@ -75,6 +80,7 @@ def redraw_screen():
 
     global player_walk_count
     global frame
+    global direction
 
     if frame + 1 >= 27:
         frame = 0
@@ -130,10 +136,24 @@ def redraw_screen():
                         (character.get_x(), character.get_y()))
             screen.blit(pygame.image.load(face_img), (20, 20))
 
-    walk_left_animation = enemy.get_walkLeft_animation()
-    screen.blit(pygame.image.load(
-        walk_left_animation[frame//3]), (enemy.get_x(), enemy.get_y()))
-    enemy.set_x(enemy.get_x() - enemy.get_velocity())
+    if enemy.get_is_attacking():
+        attack_img = enemy.get_img_attack_l()
+        screen.blit(pygame.image.load(attack_img), (enemy.get_x(), enemy.get_y()))
+   
+    else:
+        walk_left_animation = enemy.get_walkLeft_animation()
+        screen.blit(pygame.image.load(
+            walk_left_animation[frame//3]), (enemy.get_x(), enemy.get_y()))
+        enemy.set_x(enemy.get_x() - enemy.get_velocity())
+        
+    if enemy.get_is_shooting():
+        if fire_ball.get_x() >= 0:
+            fire_ball.set_state("fire")
+            screen.blit(pygame.image.load(fire_ball.get_image()), (fire_ball.get_x(), fire_ball.get_y()))
+            fire_ball.set_x(fire_ball.get_x() - fire_ball.get_velocity())
+        else:
+            enemy.set_is_shooting(False)
+            fire_ball.set_state("ready")
 
     if bullet.get_x() <= 0 or bullet.get_x() >= 682:
         bullet.set_x(character.get_x())
@@ -159,6 +179,9 @@ def redraw_screen():
 while running:
     clock.tick(27)
     frame += 1
+    
+    dt = clock1.tick()
+    time_elapsed += dt
 
     # Anything persistant goes inside this loop
     for event in pygame.event.get():
@@ -226,5 +249,24 @@ while running:
             character.set_jump(False)
             character.set_is_standing(True)
             character.set_jump_count(8)
-
+    
+    if  700 <= time_elapsed <= 1500:
+        print(time_elapsed)
+        enemy.set_attack(True)
+        enemy.set_is_shooting(True)
+        
+        if fire_ball.get_state() == "ready":
+            fire_ball.set_x(enemy.get_x())
+            fire_ball.set_y(enemy.get_y() + 20)
+            screen.blit(pygame.image.load(fire_ball.get_image()), (fire_ball.get_x(), fire_ball.get_y()))
+        
+        if 1450 <= time_elapsed <= 1500:
+            enemy.set_attack(False)
+            time_elapsed = 0
+        
     redraw_screen()
+
+# fire_ball = Bullet()
+# fire_ball.set_state("ready")
+# fire_ball.set_velocity(15)
+# fire_ball.set_image("../media/enemy/l-fire-ball.png")

@@ -15,4 +15,7 @@ class Bullet(Actor):
     def get_image(self):
         return self._image
     
+    def set_image(self, image):
+        self._image = image
+    
     

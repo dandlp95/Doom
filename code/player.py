@@ -37,8 +37,8 @@ class Player(Actor):
     def get_lives(self):
         return self._lives
     
-    def is_shooting(self, is_shooting):
-        return is_shooting
+    # def is_shooting(self, is_shooting):
+    #     return is_shooting
     
     def set_last_direction(self, last_direction):
         self._last_direction = last_direction
