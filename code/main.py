@@ -128,7 +128,7 @@ def redraw_screen():
         enemy.set_dead(True)
         enemy_dying_animation = enemy.get_dying_animation()
         screen.blit(pygame.image.load(
-            enemy_dying_animation[frame2//3]), (character.get_x(), character.get_y()))
+            enemy_dying_animation[frame2//3]), (enemy.get_x(), enemy.get_y()))
 
     if character.get_left():
         walk_left_animation = character.get_walkLeft_animation()
@@ -236,7 +236,7 @@ def redraw_screen():
     if enemy.get_x() > 675:
         enemy.set_last_direction("left")
 
-    if enemy.get_is_attacking():
+    if enemy.get_is_attacking() and enemy.get_is_dead() == False:
 
         if enemy.get_last_direction() == "left":
             attack_img = enemy.get_img_attack_l()
@@ -247,17 +247,18 @@ def redraw_screen():
                     (enemy.get_x(), enemy.get_y()))
 
     else:
-        if enemy.get_last_direction() == "left":
-            walk_animation = enemy.get_walkLeft_animation()
-        else:
-            walk_animation = enemy.get_walkRight_animation()
-        screen.blit(pygame.image.load(
-            walk_animation[frame//3]), (enemy.get_x(), enemy.get_y()))
+        if enemy.get_is_dead() == False:
+            if enemy.get_last_direction() == "left":
+                walk_animation = enemy.get_walkLeft_animation()
+            else:
+                walk_animation = enemy.get_walkRight_animation()
+            screen.blit(pygame.image.load(
+                walk_animation[frame//3]), (enemy.get_x(), enemy.get_y()))
 
-        if enemy.get_last_direction() == "left":
-            enemy.set_x(enemy.get_x() - enemy.get_velocity())
-        else:
-            enemy.set_x(enemy.get_x() + enemy.get_velocity())
+            if enemy.get_last_direction() == "left":
+                enemy.set_x(enemy.get_x() - enemy.get_velocity())
+            else:
+                enemy.set_x(enemy.get_x() + enemy.get_velocity())
 
     if fire_ball.get_state() == "fire":
         screen.blit(pygame.image.load(fire_ball.get_image()),
@@ -369,7 +370,7 @@ while running:
             character.set_is_standing(True)
             character.set_jump_count(8)
 
-    if (700 <= time_elapsed) and enemy.get_is_attacking() == False:
+    if (700 <= time_elapsed) and enemy.get_is_attacking() == False and enemy.get_is_dead() == False:
 
         enemy.set_attack(True)
         fire_ball.set_x(enemy.get_x())

@@ -21,7 +21,7 @@ class Enemy(Actor):
         self._is_dead = False
         
     def set_dead(self, is_dead):
-        self._dead = is_dead
+        self._is_dead = is_dead
     
     def get_is_dead(self):
         return self._is_dead
