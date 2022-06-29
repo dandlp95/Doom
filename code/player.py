@@ -11,11 +11,15 @@ class Player(Actor):
         self._shoot_l_img = "../media/player/shoot-l.png"
         self._walk_right = ['../media/player/R1.png', '../media/player/R2.png', '../media/player/R3.png', '../media/player/R4.png', '../media/player/R5.png', '../media/player/R6.png', '../media/player/R7.png', '../media/player/R8.png', '../media/player/R9.png']
         self._walk_left = ['../media/player/L1.png', '../media/player/L2.png', '../media/player/L3.png', '../media/player/L4.png', '../media/player/L5.png', '../media/player/L6.png', '../media/player/L7.png', '../media/player/L8.png', '../media/player/L9.png']
+        self._dying = ["../media/player/dying1.png", "../media/player/dying2.png", "../media/player/dying3.png", "../media/player/dying4.png", "../media/player/dying5.png", "../media/player/dying6.png", "../media/player/dying7.png", "../media/player/blank.png"]
         self._last_direction = ""
         self._jump_img = "../media/player/jump.png"
         self._is_jump = False
         self._jump_count = 8
         self._is_dead = False
+        
+    def get_dying_animation(self):
+        return self._dying
     
     def get_is_dead(self):
         return self._is_dead

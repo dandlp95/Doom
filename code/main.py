@@ -72,7 +72,7 @@ time_elapsed = 0
 clock1 = pygame.time.Clock()
 
 frame = 0
-
+frame2 = 0
 
 def is_collision(enemy_x, enemy_y, projectile_x, projectile_y, d):
     distance = math.sqrt(math.pow(enemy_x - projectile_x, 2) +
@@ -98,6 +98,7 @@ def redraw_screen():
     global frame
     global direction
     global time_elapsed
+    global frame2
 
     if frame + 1 >= 27:
         frame = 0
@@ -106,8 +107,17 @@ def redraw_screen():
         player_walk_count = 0
 
     if character.get_lives() <= 0:
+        if frame2 + 1 <= 21:
+            frame2 += 1
+
+        character.set_dead(True)
         face_img = faces[12]
         screen.blit(pygame.image.load(face_img), (20, 20))
+        character.set_is_standing(False)
+
+        dying_animation = character.get_dying_animation()
+        screen.blit(pygame.image.load(
+            dying_animation[frame2//3]), (character.get_x(), character.get_y()))
 
     if character.get_left():
         walk_left_animation = character.get_walkLeft_animation()
@@ -289,26 +299,26 @@ while running:
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_LEFT]:
-        
-        x = character.get_x()
-        x -= character.get_velocity()
-        character.set_x(x)
+        if not character.get_is_dead():
+            x = character.get_x()
+            x -= character.get_velocity()
+            character.set_x(x)
 
-        character.set_left(True)
-        character.set_right(False)
+            character.set_left(True)
+            character.set_right(False)
 
-        character.set_last_direction("left")
+            character.set_last_direction("left")
 
     elif keys[pygame.K_RIGHT]:
+        if not character.get_is_dead():
+            x = character.get_x()
+            x += character.get_velocity()
+            character.set_x(x)
 
-        x = character.get_x()
-        x += character.get_velocity()
-        character.set_x(x)
+            character.set_left(False)
+            character.set_right(True)
 
-        character.set_left(False)
-        character.set_right(True)
-
-        character.set_last_direction("right")
+            character.set_last_direction("right")
 
     else:
         character.set_left(False)
@@ -317,7 +327,7 @@ while running:
         player_walk_count = 0
 
     if keys[pygame.K_SPACE]:
-        if bullet.get_state() == "ready":
+        if bullet.get_state() == "ready" and not character.get_is_dead():
             direction = character.get_last_direction()
             bullet.set_x(character.get_x())
             bullet.set_y(character.get_y() + 20)
@@ -327,7 +337,7 @@ while running:
 
             shoot(bullet.get_x(), bullet.get_y())
 
-    if character.is_jump() == False:
+    if character.is_jump() == False and not character.get_is_dead():
         if keys[pygame.K_UP]:
             character.set_jump(True)
             character.set_right(False)
