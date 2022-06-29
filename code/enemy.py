@@ -15,8 +15,20 @@ class Enemy(Actor):
         self._walk_right = ["../media/enemy/R1.png", "../media/enemy/R2.png", "../media/enemy/R3.png", "../media/enemy/R4.png", "../media/enemy/R1.png", "../media/enemy/R2.png", "../media/enemy/R3.png", "../media/enemy/R4.png", "../media/enemy/R1.png"]
         self._last_direction = "left"
         
-        self._attack = False
+        self._dying_animation = ["../media/enemy/dying1.png", "../media/enemy/dying2.png", "../media/enemy/dying3.png", "../media/enemy/dying4.png", "../media/enemy/dying5.png", "../media/enemy/dying6.png", "../media/enemy/dying7.png", "../media/enemy/blank.png"]
         
+        self._attack = False
+        self._is_dead = False
+        
+    def set_dead(self, is_dead):
+        self._dead = is_dead
+    
+    def get_is_dead(self):
+        return self._is_dead
+        
+    def get_dying_animation(self):
+        return self._dying_animation
+    
     def set_attack(self, attack):
         self._attack = attack
     

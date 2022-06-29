@@ -52,6 +52,7 @@ enemy = Enemy()
 enemy.set_x(690)
 enemy.set_y(275)
 enemy.set_velocity(5)
+enemy.set_lives(10)
 
 # Setting up projectiles
 bullet = Bullet()
@@ -73,6 +74,7 @@ clock1 = pygame.time.Clock()
 
 frame = 0
 frame2 = 0
+
 
 def is_collision(enemy_x, enemy_y, projectile_x, projectile_y, d):
     distance = math.sqrt(math.pow(enemy_x - projectile_x, 2) +
@@ -118,6 +120,15 @@ def redraw_screen():
         dying_animation = character.get_dying_animation()
         screen.blit(pygame.image.load(
             dying_animation[frame2//3]), (character.get_x(), character.get_y()))
+
+    if enemy.get_lives() <= 0:
+        if frame2 + 1 <= 21:
+            frame2 += 1
+
+        enemy.set_dead(True)
+        enemy_dying_animation = enemy.get_dying_animation()
+        screen.blit(pygame.image.load(
+            enemy_dying_animation[frame2//3]), (character.get_x(), character.get_y()))
 
     if character.get_left():
         walk_left_animation = character.get_walkLeft_animation()
@@ -368,12 +379,18 @@ while running:
     enemy_collision = is_collision(
         enemy.get_x(), enemy.get_y(), bullet.get_x(), bullet.get_y(), 50)
     if enemy_collision:
-        print("You hit the enemy")
+        print("you hit enemy")
+        bullet.set_state("ready")
+        bullet.set_x(character.get_x())
+        enemy.set_lives(enemy.get_lives() - 1)
 
     character_collision = is_collision(
         character.get_x(), character.get_y(), fire_ball.get_x(), fire_ball.get_y(), 10)
     if character_collision:
         character.set_lives(character.get_lives() - 1)
+        fire_ball.set_state("ready")
+        fire_ball.set_x(enemy.get_x())
+        enemy.set_attack(False)
         print("The enemy hit you")
 
     redraw_screen()
