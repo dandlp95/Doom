@@ -29,8 +29,11 @@ running = True
 player_walk_count = 0
 
 # Faces
-faces = ["../media/player/faces/doom-face1.png", "../media/player/faces/doom-face2.png", "../media/player/faces/doom-face1.png", "../media/player/faces/doom-face3.png",
-         "../media/player/faces/doom-face1.png", "../media/player/faces/doom-face2.png", "../media/player/faces/doom-face1.png", "../media/player/faces/doom-face3.png", "../media/player/faces/doom-face1.png"]
+faces = ["../media/player/faces/doom-face1.png", "../media/player/faces/doom-face2.png", "../media/player/faces/doom-face3.png",
+         "../media/player/faces/doom-face4.png", "../media/player/faces/doom-face5.png", "../media/player/faces/doom-face6.png",
+         "../media/player/faces/doom-face7.png", "../media/player/faces/doom-face8.png", "../media/player/faces/doom-face9.png",
+         "../media/player/faces/doom-face10.png", "../media/player/faces/doom-face11.png", "../media/player/faces/doom-face12.png",
+         "../media/player/faces/dead.png"]
 
 # Setting up character
 character = Player()
@@ -42,6 +45,7 @@ character.set_height(64)
 character.set_width(64)
 character.set_last_direction("left")
 character.set_is_standing(True)
+character.set_lives(10)
 
 # Setting up enemy
 enemy = Enemy()
@@ -69,19 +73,22 @@ clock1 = pygame.time.Clock()
 
 frame = 0
 
-def is_collision(enemy_x, enemy_y, projectile_x, projectile_y):
+
+def is_collision(enemy_x, enemy_y, projectile_x, projectile_y, d):
     distance = math.sqrt(math.pow(enemy_x - projectile_x, 2) +
                          math.pow(enemy_y - projectile_y, 2))
     #print(enemy_x, enemy_y, projectile_x, projectile_y)
-    if distance < 50:
+    if distance < d:
         return True
     else:
         return False
 
+
 def shoot(x, y):
     bullet.set_state("fire")
     screen.blit(pygame.image.load(bullet.get_image()), (x, y))
-    
+
+
 def redraw_screen():
 
     # background.
@@ -90,6 +97,7 @@ def redraw_screen():
     global player_walk_count
     global frame
     global direction
+    global time_elapsed
 
     if frame + 1 >= 27:
         frame = 0
@@ -97,13 +105,25 @@ def redraw_screen():
     if player_walk_count + 1 >= 27:
         player_walk_count = 0
 
+    if character.get_lives() <= 0:
+        face_img = faces[12]
+        screen.blit(pygame.image.load(face_img), (20, 20))
+
     if character.get_left():
         walk_left_animation = character.get_walkLeft_animation()
         screen.blit(pygame.image.load(
             walk_left_animation[player_walk_count//3]), (character.get_x(), character.get_y()))
         player_walk_count += 1
 
-        screen.blit(pygame.image.load(faces[3]), (20, 20))
+        if character.get_lives() == 10:
+            face = faces[2]
+        elif character.get_lives() >= 8:
+            face = faces[5]
+        elif character.get_lives() >= 6:
+            face = faces[8]
+        elif character.get_lives() <= 5:
+            face = faces[11]
+        screen.blit(pygame.image.load(face), (20, 20))
 
     elif character.get_right():
 
@@ -112,7 +132,15 @@ def redraw_screen():
             walk_right_animation[player_walk_count//3]), (character.get_x(), character.get_y()))
         player_walk_count += 1
 
-        screen.blit(pygame.image.load(faces[1]), (20, 20))
+        if character.get_lives() == 10:
+            face = faces[1]
+        elif character.get_lives() >= 8:
+            face = faces[4]
+        elif character.get_lives() >= 6:
+            face = faces[7]
+        elif character.get_lives() <= 5:
+            face = faces[10]
+        screen.blit(pygame.image.load(face), (20, 20))
 
     elif character.get_is_standing():
         if character.get_last_direction() == "left":
@@ -120,9 +148,19 @@ def redraw_screen():
         elif character.get_last_direction() == "right":
             doom_guy_img = character.get_image_r()
 
-        screen.blit(pygame.image.load(doom_guy_img), (character.get_x(), character.get_y()))
+        screen.blit(pygame.image.load(doom_guy_img),
+                    (character.get_x(), character.get_y()))
 
-        screen.blit(pygame.image.load(faces[0]), (20, 20))
+        if character.get_lives() == 10:
+            face = faces[0]
+        elif character.get_lives() >= 8:
+            face = faces[3]
+        elif character.get_lives() >= 6:
+            face = faces[6]
+        elif character.get_lives() <= 5:
+            face = faces[9]
+
+        screen.blit(pygame.image.load(face), (20, 20))
 
     elif not character.get_is_standing():
 
@@ -130,48 +168,99 @@ def redraw_screen():
 
             if character.get_last_direction() == "left":
                 doom_guy_img = character.get_img_shooting_l()
-                face_img = faces[3]
+
+                if character.get_lives() == 10:
+                    face_img = faces[2]
+                elif character.get_lives() >= 8:
+                    face_img = faces[5]
+                elif character.get_lives() >= 6:
+                    face_img = faces[8]
+                elif character.get_lives() <= 5:
+                    face_img = faces[11]
+
             elif character.get_last_direction() == "right":
                 doom_guy_img = character.get_img_shooting_r()
-                face_img = faces[1]
 
-            screen.blit(pygame.image.load(doom_guy_img), (character.get_x(), character.get_y()))
+                if character.get_lives() == 10:
+                    face_img = faces[1]
+                elif character.get_lives() >= 8:
+                    face_img = faces[4]
+                elif character.get_lives() >= 6:
+                    face_img = faces[7]
+                elif character.get_lives() <= 5:
+                    face_img = faces[10]
+
+            screen.blit(pygame.image.load(doom_guy_img),
+                        (character.get_x(), character.get_y()))
             screen.blit(pygame.image.load(face_img), (20, 20))
 
         elif character.is_jump():
             doom_jumping = character.get_jump_img()
-            face_img = faces[0]
+
+            if character.get_lives() == 10:
+                face_img = faces[0]
+            elif character.get_lives() >= 8:
+                face_img = faces[3]
+            elif character.get_lives() >= 6:
+                face_img = faces[6]
+            elif character.get_lives() <= 5:
+                face_img = faces[9]
+
             screen.blit(pygame.image.load(doom_jumping),
                         (character.get_x(), character.get_y()))
             screen.blit(pygame.image.load(face_img), (20, 20))
 
+    if enemy.get_x() < 10:
+        enemy.set_last_direction("right")
+    if enemy.get_x() > 675:
+        enemy.set_last_direction("left")
+
     if enemy.get_is_attacking():
-        attack_img = enemy.get_img_attack_l()
-        screen.blit(pygame.image.load(attack_img), (enemy.get_x(), enemy.get_y()))
-   
+
+        if enemy.get_last_direction() == "left":
+            attack_img = enemy.get_img_attack_l()
+        else:
+            attack_img = enemy.get_img_attack_r()
+
+        screen.blit(pygame.image.load(attack_img),
+                    (enemy.get_x(), enemy.get_y()))
+
     else:
-        walk_left_animation = enemy.get_walkLeft_animation()
+        if enemy.get_last_direction() == "left":
+            walk_animation = enemy.get_walkLeft_animation()
+        else:
+            walk_animation = enemy.get_walkRight_animation()
         screen.blit(pygame.image.load(
-            walk_left_animation[frame//3]), (enemy.get_x(), enemy.get_y()))
-        enemy.set_x(enemy.get_x() - enemy.get_velocity())
-        
-    if enemy.get_is_shooting():
-        if fire_ball.get_x() >= 0:
-            fire_ball.set_state("fire")
-            screen.blit(pygame.image.load(fire_ball.get_image()), (fire_ball.get_x(), fire_ball.get_y()))
+            walk_animation[frame//3]), (enemy.get_x(), enemy.get_y()))
+
+        if enemy.get_last_direction() == "left":
+            enemy.set_x(enemy.get_x() - enemy.get_velocity())
+        else:
+            enemy.set_x(enemy.get_x() + enemy.get_velocity())
+
+    if fire_ball.get_state() == "fire":
+        screen.blit(pygame.image.load(fire_ball.get_image()),
+                    (fire_ball.get_x(), fire_ball.get_y()))
+
+        if enemy.get_last_direction() == "left":
             fire_ball.set_x(fire_ball.get_x() - fire_ball.get_velocity())
         else:
-            enemy.set_is_shooting(False)
-            fire_ball.set_state("ready")
+            fire_ball.set_x(fire_ball.get_x() + fire_ball.get_velocity())
 
-    if bullet.get_x() <= 0 or bullet.get_x() >= 682:
-        bullet.set_x(character.get_x())
-        bullet.set_state("ready")
+    if fire_ball.get_x() <= 0 or fire_ball.get_x() >= 682:
+        fire_ball.set_x(enemy.get_x())
+        fire_ball.set_state("ready")
+        enemy.set_attack(False)
+        time_elapsed = 0
 
     bullet_character_distance = abs(bullet.get_x() - character.get_x())
     if bullet_character_distance > 70:
         character.set_is_standing(True)
         character.set_is_shooting(False)
+
+    if bullet.get_x() <= 0 or bullet.get_x() >= 682:
+        bullet.set_x(character.get_x())
+        bullet.set_state("ready")
 
     if bullet.get_state() == "fire":
         shoot(bullet.get_x(), bullet.get_y())
@@ -188,7 +277,7 @@ def redraw_screen():
 while running:
     clock.tick(27)
     frame += 1
-    
+
     dt = clock1.tick()
     time_elapsed += dt
 
@@ -200,7 +289,7 @@ while running:
     keys = pygame.key.get_pressed()
 
     if keys[pygame.K_LEFT]:
-
+        
         x = character.get_x()
         x -= character.get_velocity()
         character.set_x(x)
@@ -258,22 +347,23 @@ while running:
             character.set_jump(False)
             character.set_is_standing(True)
             character.set_jump_count(8)
-    
-    if  700 <= time_elapsed <= 1500:
+
+    if (700 <= time_elapsed) and enemy.get_is_attacking() == False:
+
         enemy.set_attack(True)
-        enemy.set_is_shooting(True)
-        
-        if fire_ball.get_state() == "ready":
-            fire_ball.set_x(enemy.get_x())
-            fire_ball.set_y(enemy.get_y() + 20)
-            screen.blit(pygame.image.load(fire_ball.get_image()), (fire_ball.get_x(), fire_ball.get_y()))
-        
-        if 1450 <= time_elapsed <= 1500:
-            enemy.set_attack(False)
-            time_elapsed = 0
-    
-    collision = is_collision(enemy.get_x(), enemy.get_y(), bullet.get_x(), bullet.get_y())
-    if collision:
+        fire_ball.set_x(enemy.get_x())
+        fire_ball.set_y(enemy.get_y() + 20)
+        fire_ball.set_state("fire")
+
+    enemy_collision = is_collision(
+        enemy.get_x(), enemy.get_y(), bullet.get_x(), bullet.get_y(), 50)
+    if enemy_collision:
         print("You hit the enemy")
-        
+
+    character_collision = is_collision(
+        character.get_x(), character.get_y(), fire_ball.get_x(), fire_ball.get_y(), 10)
+    if character_collision:
+        character.set_lives(character.get_lives() - 1)
+        print("The enemy hit you")
+
     redraw_screen()

@@ -15,6 +15,13 @@ class Player(Actor):
         self._jump_img = "../media/player/jump.png"
         self._is_jump = False
         self._jump_count = 8
+        self._is_dead = False
+    
+    def get_is_dead(self):
+        return self._is_dead
+
+    def set_dead(self, is_dead):
+        self._is_dead = is_dead
     
     def get_jump_img(self):
         return self._jump_img

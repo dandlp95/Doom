@@ -12,8 +12,8 @@ class Enemy(Actor):
         # Right
         self._image_r = "../media/enemy/R2.png"
         self._attack_r_img = "../media/enemy/r-attack.png"
-        self._walk_right = ["../media/enemy/R1.png", "../media/enemy/R2.png", "../media/enemy/R3.png", "../media/enemy/R4.png"]
-        self._last_direction = ""
+        self._walk_right = ["../media/enemy/R1.png", "../media/enemy/R2.png", "../media/enemy/R3.png", "../media/enemy/R4.png", "../media/enemy/R1.png", "../media/enemy/R2.png", "../media/enemy/R3.png", "../media/enemy/R4.png", "../media/enemy/R1.png"]
+        self._last_direction = "left"
         
         self._attack = False
         
