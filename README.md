@@ -6,7 +6,7 @@ This game is supposed to  be a 2D recreation of the iconic 1993 game, Doom. The 
 
 I created this project to start game development. I chose pygame to gain some exposure to some of the basic concepts of game development such as display graphics and move objects based on user input. I will continue  to work in this game to gain more experience, but my main purpose will be to build something more complex in Unreal Engine. 
 
-[Software Demo Video](http://youtube.link.goes.here)
+[Software Demo Video](https://youtu.be/dTWsUAkmYak)
 
 # Development Environment
 
