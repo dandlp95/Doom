@@ -1,5 +1,4 @@
 import pygame
-import random
 import math
 from pygame import mixer
 from player import Player
