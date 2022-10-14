@@ -18,7 +18,6 @@ Tools, languages and libraries used:
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
 * [Pygame official website](https://www.pygame.org/news)
 * [Pygame tutorial](https://www.youtube.com/watch?v=FfWpgLFMI7w)
 
